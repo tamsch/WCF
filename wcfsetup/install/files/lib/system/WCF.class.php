@@ -144,6 +144,8 @@ class WCF {
 	 * Calls all init functions of the WCF class.
 	 */
 	public function __construct() {
+		self::getDebugBar();
+		self::$debugBarObj['time']->startMeasure(__METHOD__, __METHOD__);
 		// add autoload directory
 		self::$autoloadDirectories['wcf'] = WCF_DIR . 'lib/';
 		
@@ -165,6 +167,7 @@ class WCF {
 		self::$debugBarObj->getJavaScriptRenderer()->setOpenHandlerUrl(self::getPath().'debugbar.php');
 		
 		EventHandler::getInstance()->fireAction($this, 'initialized');
+		self::$debugBarObj['time']->stopMeasure(__METHOD__, __METHOD__);
 	}
 	
 	/**

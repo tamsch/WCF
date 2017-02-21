@@ -6,6 +6,7 @@ use wcf\system\event\EventHandler;
 use wcf\system\exception\SystemException;
 use wcf\system\Regex;
 use wcf\system\SingletonFactory;
+use wcf\system\WCF;
 use wcf\util\DirectoryUtil;
 use wcf\util\HeaderUtil;
 use wcf\util\StringUtil;
@@ -292,6 +293,8 @@ class TemplateEngine extends SingletonFactory {
 	 * @param	boolean		$sendHeaders
 	 */
 	public function display($templateName, $application = 'wcf', $sendHeaders = true) {
+		static $measure = 0;
+		WCF::getDebugBar()['time']->startMeasure(++$measure, __METHOD__."($templateName, $application)");
 		if ($sendHeaders) {
 			HeaderUtil::sendHeaders();
 			
@@ -316,6 +319,7 @@ class TemplateEngine extends SingletonFactory {
 		
 		// assign current package id
 		$this->assign('__APPLICATION', $application);
+		WCF::getDebugBar()['time']->stopMeasure($measure);
 		
 		include($compiledFilename);
 		
