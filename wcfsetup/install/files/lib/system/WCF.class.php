@@ -161,6 +161,9 @@ class WCF {
 		$this->initApplications();
 		$this->initBlacklist();
 		
+		self::$debugBarObj->getJavaScriptRenderer(self::getPath().'lib/system/api/maximebf/debugbar/src/DebugBar/Resources');
+		self::$debugBarObj->getJavaScriptRenderer()->setOpenHandlerUrl(self::getPath().'debugbar.php');
+		
 		EventHandler::getInstance()->fireAction($this, 'initialized');
 	}
 	
@@ -783,7 +786,16 @@ class WCF {
 	public static function getDebugBar() {
 		if (self::$debugBarObj === null) {
 			self::$debugBarObj = new StandardDebugBar();
-			self::$debugBarObj->getJavaScriptRenderer('/lib/system/api/maximebf/debugbar/src/DebugBar/Resources');
+			self::$debugBarObj->setStorage(new \DebugBar\Storage\FileStorage(WCF_DIR.'cache/debugbar/'));
+			
+			$isAjax = isset($_SERVER['HTTP_X_REQUESTED_WITH']) && ($_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest');
+			
+			if ($isAjax) {
+				ob_start(function ($data) {
+					self::$debugBarObj->sendDataInHeaders(true);
+					return $data;
+				});
+			}
 		}
 
 		return self::$debugBarObj;

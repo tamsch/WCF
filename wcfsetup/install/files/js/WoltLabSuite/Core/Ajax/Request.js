@@ -220,6 +220,7 @@ define(['Core', 'Language', 'Dom/ChangeListener', 'Dom/Util', 'Ui/Dialog', 'Wolt
 		 * @param	{Object}        	options		request options
 		 */
 		_success: function(xhr, options) {
+			phpdebugbar.ajaxHandler.handle(xhr);
 			if (!options.silent) {
 				AjaxStatus.hide();
 			}
@@ -257,6 +258,7 @@ define(['Core', 'Language', 'Dom/ChangeListener', 'Dom/Util', 'Ui/Dialog', 'Wolt
 		 * @param	{Object}        	options		request options
 		 */
 		_failure: function (xhr, options) {
+			phpdebugbar.ajaxHandler.handle(xhr);
 			if (_ignoreAllErrors) {
 				return;
 			}
