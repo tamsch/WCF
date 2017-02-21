@@ -1,7 +1,10 @@
 <?php
 namespace wcf\system\database;
+use DebugBar\DataCollector\PDO\TraceablePDO;
+use DebugBar\DataCollector\PDO\PDOCollector;
 use wcf\system\database\editor\MySQLDatabaseEditor;
 use wcf\system\database\exception\DatabaseException as GenericDatabaseException;
+use wcf\system\WCF;
 
 /**
  * This is the database implementation for MySQL 5.1 or higher using PDO.
@@ -39,7 +42,9 @@ class MySQLDatabase extends Database {
 			// throw PDOException instead of dumb false return values
 			$driverOptions[\PDO::ATTR_ERRMODE] = \PDO::ERRMODE_EXCEPTION;
 			
-			$this->pdo = new \PDO('mysql:host='.$this->host.';port='.$this->port.';dbname='.$this->database, $this->user, $this->password, $driverOptions);
+			$pdo = new \PDO('mysql:host='.$this->host.';port='.$this->port.';dbname='.$this->database, $this->user, $this->password, $driverOptions);
+			$this->pdo = new TraceablePDO($pdo);
+			WCF::getDebugBar()->addCollector(new PDOCollector($this->pdo));
 			$this->setAttributes();
 		}
 		catch (\PDOException $e) {
