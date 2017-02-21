@@ -1,5 +1,6 @@
 <?php
 namespace wcf\system;
+use DebugBar\StandardDebugBar;
 use wcf\data\application\Application;
 use wcf\data\option\OptionEditor;
 use wcf\data\package\Package;
@@ -126,6 +127,12 @@ class WCF {
 	 * @var	TemplateEngine
 	 */
 	protected static $tplObj = null;
+
+	/**
+	 * debug bar object
+	 * @var StandardDebugBar
+	 */
+	protected static $debugBarObj = null;
 	
 	/**
 	 * true if Zend Opcache is loaded and enabled
@@ -771,6 +778,15 @@ class WCF {
 		// benchmarking is enabled by default
 		if (!defined('ENABLE_BENCHMARK') || ENABLE_BENCHMARK) return true;
 		return false;
+	}
+	
+	public static function getDebugBar() {
+		if (self::$debugBarObj === null) {
+			self::$debugBarObj = new StandardDebugBar();
+			self::$debugBarObj->getJavaScriptRenderer('/lib/system/api/maximebf/debugbar/src/DebugBar/Resources');
+		}
+
+		return self::$debugBarObj;
 	}
 	
 	/**

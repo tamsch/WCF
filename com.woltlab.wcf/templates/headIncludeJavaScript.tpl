@@ -169,6 +169,7 @@ requirejs.config({
 {js application='wcf' file='WCF.Search.Message' bundle='WCF.Combined'}
 {js application='wcf' file='WCF.User' bundle='WCF.Combined'}
 {js application='wcf' file='WCF.Moderation' bundle='WCF.Combined'}
+{@$__wcf->getDebugBar()->getJavaScriptRenderer()->renderHead()}
 
 {event name='javascriptInclude'}
 

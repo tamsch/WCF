@@ -131,6 +131,7 @@
 </div>
 
 <!-- JAVASCRIPT_RELOCATE_POSITION -->
+{@$__wcf->getDebugBar()->getJavaScriptRenderer()->render()}
 
 {@FOOTER_CODE}
 
