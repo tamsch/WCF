@@ -6,6 +6,7 @@
     "require": {
         "ezyang/htmlpurifier": "4.8.*",
         "erusev/parsedown": "1.6.*",
-        "pelago/emogrifier": "1.1.*"
+        "pelago/emogrifier": "1.1.*",
+        "maximebf/debugbar": "^1.13"
     }
 }
