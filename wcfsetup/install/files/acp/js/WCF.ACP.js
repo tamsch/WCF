@@ -1163,8 +1163,7 @@ WCF.ACP.PluginStore.PurchasedItems.Search = Class.extend({
 			actionName: 'searchForPurchasedItems',
 			className: 'wcf\\data\\package\\PackageAction',
 			parameters: {
-				password: $('#pluginStorePassword').val(),
-				username: $('#pluginStoreUsername').val()
+				authCode: $('#pluginStoreAuthCode').val()
 			}
 		});
 		this._proxy.sendRequest();

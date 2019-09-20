@@ -53,26 +53,10 @@ class PackageAction extends AbstractDatabaseObjectAction {
 	public function validateSearchForPurchasedItems() {
 		WCF::getSession()->checkPermissions(['admin.configuration.package.canInstallPackage', 'admin.configuration.package.canUpdatePackage']);
 		
-		$this->readString('password', true);
-		$this->readString('username', true);
+		$this->readString('authCode', true);
 		
-		if (empty($this->parameters['username'])) {
-			$conditions = new PreparedStatementConditionBuilder();
-			$conditions->add("serverURL REGEXP ?", ['https?://store\.woltlab\.com/[a-z]+/']);
-			$conditions->add("loginUsername <> ''");
-			$conditions->add("loginPassword <> ''");
-			
-			// check if user has already provided credentials
-			$sql = "SELECT	loginUsername, loginPassword
-				FROM	wcf".WCF_N."_package_update_server
-				".$conditions;
-			$statement = WCF::getDB()->prepareStatement($sql, 1);
-			$statement->execute($conditions->getParameters());
-			$row = $statement->fetchArray();
-			if (!empty($row['loginUsername']) && !empty($row['loginPassword'])) {
-				$this->parameters['password'] = $row['loginPassword'];
-				$this->parameters['username'] = $row['loginUsername'];
-			}
+		if (empty($this->parameters['authCode']) && PACKAGE_SERVER_AUTH_CODE) {
+			$this->parameters['authCode'] = PACKAGE_SERVER_AUTH_CODE;
 		}
 	}
 	
@@ -89,18 +73,20 @@ class PackageAction extends AbstractDatabaseObjectAction {
 			];
 		}
 		
-		if (empty($this->parameters['username']) || empty($this->parameters['password'])) {
+		if (empty($this->parameters['authCode'])) {
 			return [
 				'template' => $this->renderAuthorizationDialog(false)
 			];
 		}
 		
-		$request = new HTTPRequest('https://api.woltlab.com/1.1/customer/purchases/list.json', [
+		$request = new HTTPRequest('https://api.woltlab.com/2.0/customer/purchases/list.json', [
 			'method' => 'POST'
 		], [
-			'username' => $this->parameters['username'],
-			'password' => $this->parameters['password'],
-			'wcfVersion' => WCF_VERSION
+			'authCode' => $this->parameters['authCode'],
+			'apiVersions' => array_merge(
+				WCF::getSupportedLegacyApiVersions(),
+				[WSC_API_VERSION]
+			),
 		]);
 		
 		$request->execute();
@@ -117,7 +103,6 @@ class PackageAction extends AbstractDatabaseObjectAction {
 				}
 				else {
 					WCF::getSession()->register('__pluginStoreProducts', $response['products']);
-					WCF::getSession()->register('__pluginStoreWcfMajorReleases', $response['wcfMajorReleases']);
 					
 					return [
 						'redirectURL' => LinkHandler::getInstance()->getLink('PluginStorePurchasedItems')
@@ -128,7 +113,7 @@ class PackageAction extends AbstractDatabaseObjectAction {
 			// authentication error
 			case 401:
 				return [
-					'template' => $this->renderAuthorizationDialog(true)
+					'template' => $this->renderAuthorizationDialog(true, $this->parameters['authCode'])
 				];
 			break;
 			
@@ -143,10 +128,12 @@ class PackageAction extends AbstractDatabaseObjectAction {
 	 * Renders the authentication dialog.
 	 * 
 	 * @param	boolean		$rejected
+	 * @param string $authCode
 	 * @return	string
 	 */
-	protected function renderAuthorizationDialog($rejected) {
+	protected function renderAuthorizationDialog($rejected, $authCode = '') {
 		WCF::getTPL()->assign([
+			'authCode' => $authCode ?: PACKAGE_SERVER_AUTH_CODE,
 			'rejected' => $rejected
 		]);
 		

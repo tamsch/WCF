@@ -9,13 +9,8 @@
 	</header>
 	
 	<dl>
-		<dt><label for="pluginStoreUsername">{lang}wcf.acp.pluginStore.authorization.username{/lang}</label></dt>
-		<dd><input type="text" id="pluginStoreUsername" value="" class="long"></dd>
-	</dl>
-	
-	<dl>
-		<dt><label for="pluginStorePassword">{lang}wcf.acp.pluginStore.authorization.password{/lang}</label></dt>
-		<dd><input type="password" id="pluginStorePassword" value="" class="long" autocomplete="off"></dd>
+		<dt><label for="pluginStoreAuthCode">{lang}wcf.acp.pluginStore.authorization.authCode{/lang}</label></dt>
+		<dd><input type="text" id="pluginStoreAuthCode" value="{$authCode}" class="long"></dd>
 	</dl>
 </section>
 
