@@ -511,6 +511,10 @@
 	<spider ident="Google-AdWords-Express">
 		<name>Google-AdWords-Express</name>
 	</spider>
+	<spider ident="Googlebot-Video/1.0">
+		<name>Googlebot-Video</name>
+		<url>https://developers.google.com/search/docs/advanced/crawling/overview-google-crawlers?hl=de</url>
+	</spider>
 	<spider ident="AdsBot-Google">
 		<name>Google Ads-Bot</name>
 		<url>http://www.google.com/adsbot.html</url>
@@ -910,6 +914,10 @@
 	</spider>
 	<spider ident="PerlCrawler/1.0 Xavatoria/2.0">
 		<name>PerlCrawler 1.0</name>
+	</spider>
+	<spider ident="PetalBot">
+		<name>PetalBot</name>
+		<url>http://aspiegel.com/petalbot</url>
 	</spider>
 	<spider ident="PGP-KA">
 		<name>PGP Key Agent</name>
