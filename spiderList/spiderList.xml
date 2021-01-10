@@ -103,6 +103,10 @@
 		<name>Baiduspider</name>
 		<url>http://www.baidu.com/search/spider.htm</url>
 	</spider>
+	<spider ident="Barkrowler/0.9">
+		<name>Barkrowler</name>
+		<url>https://babbar.tech/crawler</url>
+	</spider>
 	<spider ident="bbot">
 		<name>BBot</name>
 		<url>http://www.robotstxt.org/wc/active/html/bbot.html</url>
