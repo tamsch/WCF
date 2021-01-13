@@ -25,6 +25,9 @@
 		<name>Acoon</name>
 		<url>http://www.acoon.de/robot.asp</url>
 	</spider>
+		<spider ident="Adsbot/3.1">
+		<name>Adsbot</name>
+	</spider>
 	<spider ident="Ahoy!">
 		<name>Ahoy!</name>
 		<url>http://www.robotstxt.org/wc/active/html/ahoythehomepagefinder.html</url>
