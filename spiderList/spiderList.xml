@@ -714,6 +714,10 @@
 	<spider ident="legs">
 		<name>legs</name>
 	</spider>
+	<spider ident="Let's Encrypt validation server">
+		<name>Let's Encrypt Validation Bot</name>
+		<url>https://www.letsencrypt.org</url>
+	</spider>
 	<spider ident="linkdexbot">
 		<name>Linkdex</name>
 		<url>http://www.linkdex.com/bots/</url>
